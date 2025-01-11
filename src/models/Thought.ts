@@ -1,7 +1,7 @@
 import { Schema, Types, model, type Document } from 'mongoose';
 
 interface IReaction extends Document {
-    reactionId: Schema.Types.ObjectId,
+    reactionId: Types.ObjectId,
     reactionBody: string,
     username: string,
     createdAt: Date,
