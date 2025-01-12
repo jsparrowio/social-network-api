@@ -9,7 +9,7 @@ interface IReaction extends Document {
 
 interface IThought extends Document {
     thoughtText: string,
-    createdAt: Date, 
+    createdAt: Date,
     username: string,
     reactions: IReaction[]
 }
@@ -31,8 +31,10 @@ const reactionSchema = new Schema<IReaction>(
         },
         createdAt: {
             type: Date,
-            required: true,
-            default: () => new Date()
+            default: Date.now,
+            get: function(value: any) {
+                return value.toLocaleString();
+            }
         }
     },
     {
@@ -55,8 +57,10 @@ const thoughtSchema = new Schema<IThought>(
         },
         createdAt: {
             type: Date,
-            required: true,
-            default: () => new Date()
+            default: Date.now,
+            get: function(value: any) {
+                return value.toLocaleString();
+            }
         },
         username: {
             type: String,
@@ -77,21 +81,9 @@ const thoughtSchema = new Schema<IThought>(
 const Thought = model('Thought', thoughtSchema);
 
 thoughtSchema
-    .virtual('formattedTimestamp')
-    .get(function () {
-        return this.createdAt.toLocaleString();
-    });
-
-thoughtSchema
     .virtual('reactionCount')
     .get(function (this: any) {
         return this.reactions.length;
-    });
-
-reactionSchema
-    .virtual('formattedTimestamp')
-    .get(function () {
-        return this.createdAt.toLocaleString();
     });
 
 export default Thought;
