@@ -4,7 +4,9 @@ interface IUser extends Document {
     username: string,
     email: string,
     thoughts: ObjectId[],
-    friends: ObjectId[]
+    friends: ObjectId[],
+    createdAt: Date,
+    updatedAt: Date
 }
 
 const userSchema = new Schema<IUser>(
@@ -33,7 +35,20 @@ const userSchema = new Schema<IUser>(
                 type: Schema.Types.ObjectId,
                 ref: 'User',
             }
-        ]
+        ],
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: function(value: any) {
+                return value.toLocaleString();
+            }
+        },
+        updatedAt: {
+            type: Date,
+            get: function(value: any) {
+                return value.toLocaleString();
+            }
+        }
     },
     {
         toJSON: {

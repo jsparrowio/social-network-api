@@ -5,11 +5,13 @@ interface IReaction extends Document {
     reactionBody: string,
     username: string,
     createdAt: Date,
+    updatedAt: Date
 }
 
 interface IThought extends Document {
     thoughtText: string,
     createdAt: Date,
+    updatedAt: Date,
     username: string,
     reactions: IReaction[]
 }
@@ -32,6 +34,12 @@ const reactionSchema = new Schema<IReaction>(
         createdAt: {
             type: Date,
             default: Date.now,
+            get: function(value: any) {
+                return value.toLocaleString();
+            }
+        },
+        updatedAt: {
+            type: Date,
             get: function(value: any) {
                 return value.toLocaleString();
             }
@@ -58,6 +66,12 @@ const thoughtSchema = new Schema<IThought>(
         createdAt: {
             type: Date,
             default: Date.now,
+            get: function(value: any) {
+                return value.toLocaleString();
+            }
+        },
+        updatedAt: {
+            type: Date,
             get: function(value: any) {
                 return value.toLocaleString();
             }
