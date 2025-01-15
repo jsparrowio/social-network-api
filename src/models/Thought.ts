@@ -1,5 +1,7 @@
+// import mongoose classes and types
 import { Schema, Types, model, type Document } from 'mongoose';
 
+// interface for reactions, which sets up the structure for the reaction schema, which will be a sub schema for thoughts
 interface IReaction extends Document {
     reactionId: Types.ObjectId,
     reactionBody: string,
@@ -8,6 +10,7 @@ interface IReaction extends Document {
     updatedAt: Date
 }
 
+// interface for thoughts, which sets up the structure for the thought schema
 interface IThought extends Document {
     thoughtText: string,
     createdAt: Date,
@@ -16,6 +19,7 @@ interface IThought extends Document {
     reactions: IReaction[]
 }
 
+// schema for reaction subdocuments, which is dependent on the thought schema
 const reactionSchema = new Schema<IReaction>(
     {
         reactionId: {
@@ -34,13 +38,13 @@ const reactionSchema = new Schema<IReaction>(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: function(value: any) {
+            get: function (value: any) {
                 return value.toLocaleString();
             }
         },
         updatedAt: {
             type: Date,
-            get: function(value: any) {
+            get: function (value: any) {
                 return value.toLocaleString();
             }
         }
@@ -55,6 +59,7 @@ const reactionSchema = new Schema<IReaction>(
     }
 );
 
+// schema for thought documents
 const thoughtSchema = new Schema<IThought>(
     {
         thoughtText: {
@@ -66,13 +71,13 @@ const thoughtSchema = new Schema<IThought>(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: function(value: any) {
+            get: function (value: any) {
                 return value.toLocaleString();
             }
         },
         updatedAt: {
             type: Date,
-            get: function(value: any) {
+            get: function (value: any) {
                 return value.toLocaleString();
             }
         },
@@ -92,8 +97,10 @@ const thoughtSchema = new Schema<IThought>(
     }
 );
 
+// model, which is the basis for all thought documents created
 const Thought = model('Thought', thoughtSchema);
 
+// virtual to return a count of reactions on query
 thoughtSchema
     .virtual('reactionCount')
     .get(function (this: any) {

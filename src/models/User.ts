@@ -1,5 +1,6 @@
 import { Schema, model, type ObjectId, type Document } from 'mongoose';
 
+// nterface for users, which sets up the structure for the user schema
 interface IUser extends Document {
     username: string,
     email: string,
@@ -9,6 +10,7 @@ interface IUser extends Document {
     updatedAt: Date
 }
 
+// schema for user documents
 const userSchema = new Schema<IUser>(
     {
         username: {
@@ -39,13 +41,13 @@ const userSchema = new Schema<IUser>(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: function(value: any) {
+            get: function (value: any) {
                 return value.toLocaleString();
             }
         },
         updatedAt: {
             type: Date,
-            get: function(value: any) {
+            get: function (value: any) {
                 return value.toLocaleString();
             }
         }
@@ -60,12 +62,14 @@ const userSchema = new Schema<IUser>(
     }
 );
 
+// model, which is the basis for all user documents created
 const User = model<IUser>('User', userSchema);
 
+// virtual to return a count of friends on query
 userSchema
- .virtual('friendCount')
- .get(function (this: any) {
-    return this.friends.length;
-  });
+    .virtual('friendCount')
+    .get(function (this: any) {
+        return this.friends.length;
+    });
 
 export default User;

@@ -1,13 +1,16 @@
+// import dependencies for HTTP Requests, mongo typing, and models
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { User } from '../models/index.js';
 
+// function to get a count of all user documents in the user collection
 export const userCount = async () => {
     const usersAmount = await User.aggregate()
         .count('userCount');
     return usersAmount;
 }
 
+// function to get and return all user documents in the user collection
 export const getAllUsers = async (_req: Request, res: Response) => {
     console.log('Getting all users...')
     try {
@@ -28,6 +31,7 @@ export const getAllUsers = async (_req: Request, res: Response) => {
     }
 }
 
+// function to get and return a user by its ID using the request params
 export const getUserById = async (req: Request, res: Response) => {
     const { userPId } = req.params;
     console.log(`Attempting to find user:`, userPId);
@@ -53,6 +57,7 @@ export const getUserById = async (req: Request, res: Response) => {
     }
 };
 
+// function to create a new user document based on a request body and store it in the user collection
 export const createUser = async (req: Request, res: Response) => {
     console.log('Attempting to create user...')
     try {
@@ -67,6 +72,7 @@ export const createUser = async (req: Request, res: Response) => {
     }
 }
 
+// function to update a user based on its ID using the request params and store the updated user in the DB
 export const updateUser = async (req: Request, res: Response) => {
     const { userPId } = req.params;
     console.log(`Attempting to update user:`, userPId);
@@ -96,6 +102,7 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 };
 
+// function to delete a user based on its ID using the request params
 export const deleteUser = async (req: Request, res: Response) => {
     const { userPId } = req.params;
     console.log(`Attempting to delete user:`, userPId);
@@ -121,6 +128,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 };
 
+// function to add a friend using both the users ID and the friends ID using request params, and add that friend to the friends array in the user if found
 export const addFriend = async (req: Request, res: Response) => {
     const { userPId } = req.params;
     const { friendPId } = req.params;
@@ -129,23 +137,24 @@ export const addFriend = async (req: Request, res: Response) => {
     const friendId = new ObjectId(friendPId);
     try {
         const friend = await User.findById(friendId);
-        if(friend) {
-        const response = await User.findOneAndUpdate(
-            userId,
-            { $addToSet: { friends: friendId } },
-            { runValidators: true, new: true }
-        );
-        if (response) {
-            console.log(`Friend ${friendPId} added to user ${userPId}`);
-            res.json({
-                response
-            });
+        if (friend) {
+            const response = await User.findOneAndUpdate(
+                userId,
+                { $addToSet: { friends: friendId } },
+                { runValidators: true, new: true }
+            );
+            if (response) {
+                console.log(`Friend ${friendPId} added to user ${userPId}`);
+                res.json({
+                    response
+                });
+            } else {
+                console.warn('User not found');
+                res.status(404).json({
+                    message: 'User not found'
+                });
+            }
         } else {
-            console.warn('User not found');
-            res.status(404).json({
-                message: 'User not found'
-            });
-        } } else {
             console.warn('Friend user ID not found');
             res.status(404).json({
                 message: 'The user that is being added as a friend was not found'
@@ -159,6 +168,7 @@ export const addFriend = async (req: Request, res: Response) => {
     }
 };
 
+// function to delete a friend using both the user ID and friend ID using the request params
 export const deleteFriend = async (req: Request, res: Response) => {
     const { userPId } = req.params;
     const { friendPId } = req.params;

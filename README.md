@@ -84,7 +84,7 @@ DELETE to remove a thought by its _id
 
 POST to create a reaction stored in a single thought's reactions array field
 
-DELETE to pull and remove a reaction by the reaction's reactionId value:
+DELETE to pull and remove a reaction by the reaction's reactionId value:\
 To delete, use JSON data such as:
 
 {\

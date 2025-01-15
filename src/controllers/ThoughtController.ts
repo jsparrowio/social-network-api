@@ -1,14 +1,17 @@
+// import dependencies for HTTP Requests, mongo/mongoose typing, and models
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { Types } from 'mongoose';
 import { Thought, User } from '../models/index.js';
 
+// function to return the count of thoughts
 export const thoughtCount = async () => {
     const thoughtAmount = await Thought.aggregate()
         .count('thoughtCount');
     return thoughtAmount;
 }
 
+// function to get and return all thought documents in the thought collection
 export const getAllThoughts = async (_req: Request, res: Response) => {
     console.log('Getting all thoughts...')
     try {
@@ -29,6 +32,7 @@ export const getAllThoughts = async (_req: Request, res: Response) => {
     }
 }
 
+// function to get and return a thought by its ID using the request params
 export const getThoughtById = async (req: Request, res: Response) => {
     const { thoughtPId } = req.params;
     console.log(`Attempting to find thought:`, thoughtPId);
@@ -54,6 +58,7 @@ export const getThoughtById = async (req: Request, res: Response) => {
     }
 };
 
+// function to create a new thought document based on a request body and store it in the thought collection
 export const createThought = async (req: Request, res: Response) => {
     const { userId } = req.body;
     console.log(`Attempting to create thought and add it to user ${userId}`);
@@ -96,6 +101,7 @@ export const createThought = async (req: Request, res: Response) => {
     }
 };
 
+// function to update a thought based on its ID using the request params and store the updated thought in the DB
 export const updateThought = async (req: Request, res: Response) => {
     const { thoughtPId } = req.params;
     console.log(`Attempting to update thought:`, thoughtPId);
@@ -125,6 +131,7 @@ export const updateThought = async (req: Request, res: Response) => {
     }
 };
 
+// function to delete a thought based on its ID using the request params
 export const deleteThought = async (req: Request, res: Response) => {
     const { thoughtPId } = req.params;
     console.log(`Attempting to delete thought:`, thoughtPId);
@@ -174,6 +181,7 @@ export const deleteThought = async (req: Request, res: Response) => {
     }
 };
 
+// function to add a reaction subdoc to a thought based on the requests params thought ID
 export const addReaction = async (req: Request, res: Response) => {
     const { thoughtPId } = req.params;
     console.log(`Attemting to add reaction to thought ${thoughtPId}...`);
@@ -203,6 +211,7 @@ export const addReaction = async (req: Request, res: Response) => {
     }
 }
 
+// remove a reaction from a thought using the thought ID from the requests params and the request body which will contain the reaction Id
 export const removeReaction = async (req: Request, res: Response) => {
     const { thoughtPId } = req.params;
     console.log(`Attempting to delete reaction from thought:`, thoughtPId);
