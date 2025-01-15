@@ -91,7 +91,7 @@ To delete, use JSON data such as:
   "reactionId": "67831eca2ffa1061e1af131b"\
 }
 
-If further instruction is needed, please view walkthrough video: [here]()
+If further instruction is needed, please view walkthrough video: [here](https://drive.google.com/file/d/1M5CzXm2tYVuQG7hX7U2vuNHoBuDtj-qS/view?usp=sharing)
 
 ## License
 
